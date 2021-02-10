@@ -1,0 +1,35 @@
+
+ 
+ 
+ 
+<% if (title == 'Create Category') { %>
+    <div class="col-sm-12">    
+           <div class="jumbotron">
+               <h2>Add Category</h2>
+               <form action="" method="post">
+                 Name:<br>
+                 <input type="text" name="name" placeholder="name">
+                 <br>
+                 Specification:<br>
+                 <input type="text" name="specification" placeholder="specification">
+                 <br><br>
+                 <input type="submit" value="Submit">
+               </form>
+           </div>
+       </div>
+   <% } if (title == 'Update Category') { %>
+   <div class="jumbotron">
+       <h2>Edit Category</h2>
+               <form action="" method="post">
+                 Name:<br>
+                 <input type="text" name="username" value= <%= category.name%> >
+                 <br>
+                 Specification:<br>
+                 <input type="text" name="specification" value= <%= category.specification%> >
+                 <br><br>
+                 <input type="submit" value="Submit">
+               </form>
+           </div>
+   <% } else { %>
+       
+   <% } %>
