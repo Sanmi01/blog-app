@@ -3,6 +3,7 @@ module.exports = (sequelize, DataTypes) => {
   var Post = sequelize.define('Post', {
     post_title: DataTypes.STRING,
     post_body: DataTypes.STRING,
+    AuthorId: DataTypes.INTEGER
   });
 
   Post.associate = function(models) {
