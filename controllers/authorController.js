@@ -18,7 +18,6 @@ exports.author_create_post = function(req, res, next) {
             first_name: req.body.first_name,
             last_name: req.body.last_name,
             role: req.body.role,
-            author_id: req.body.author_id,
         }).then(function() {
             console.log("Author created successfully");
            // check if there was an error during post creation
@@ -32,7 +31,7 @@ exports.author_delete_get = function(req, res, next) {
         models.Author.destroy({
             // find the post_id to delete from database
             where: {
-              author_id: req.params.author_id
+              id: req.params.author_id
             }
           }).then(function() {
            // If an post gets deleted successfully, we just redirect to posts list
@@ -52,7 +51,7 @@ exports.author_delete_post = function(req, res, next) {
         models.Author.destroy({
             // find the post_id to delete from database
             where: {
-              author_id: req.params.author_id
+              id: req.params.author_id
             }
           }).then(function() {
            // If an post gets deleted successfully, we just redirect to posts list
@@ -96,7 +95,7 @@ exports.author_update_post = function(req, res, next) {
           { // Clause
                 where:
                 {
-                    author_id: req.params.author_id
+                    id: req.params.author_id
                 }
             }
         //   returning: true, where: {author_id: req.params.post_id} 

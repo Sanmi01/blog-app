@@ -11,9 +11,10 @@ module.exports = (sequelize, DataTypes) => {
 
   Post.associate = function (models) {
     models.Post.belongsTo(models.Author, {
-      constraints: true,
-      onDelete: 'CASCADE',
-      foreignKey: 'author_id'
+      onDelete: "CASCADE",
+      foreignKey: {
+        allowNull: false
+      }
     });
    };
 

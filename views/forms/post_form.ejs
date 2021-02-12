@@ -12,8 +12,13 @@
               Post Body:<br>
               <input type="text" name="post_body" value="Post Body">
               <br><br>
-              Author ID:<br>
-              <input type="text" name="author_id" value="1">
+              Author:<br>
+                <select name = "author_id" class="form-control">
+                    <% authors.forEach(function(author) { %>
+                    <option  value="<%= author.id %>"><%= author.first_name %></option>
+                    <br/>
+                    <% }); %>
+                </select>
               <input type="submit" value="Submit">
             </form>
         </div>

@@ -5,12 +5,6 @@ module.exports = (sequelize, DataTypes) => {
     last_name: DataTypes.STRING,
     username: DataTypes.STRING,
     role: DataTypes.STRING,
-    author_id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      allowNull: false,
-      primaryKey: true
-    },
     email: {
         type: DataTypes.STRING,
         allowNull: false,

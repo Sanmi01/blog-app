@@ -6,13 +6,13 @@
         <ol>
         <% authors.forEach(function(author) { %>
                 <li>
-                    <h4><a href="/blog/author/<%= author.author_id %>"><%= author.username %></a></h4>
+                    <h4><a href="/blog/author/<%= author.id %>"><%= author.username %></a></h4>
                     <p>Email:<%= author.email %></p>
                     <p>First Name:<%= author.first_name %></p>
                     <p>Last Name:<%= author.last_name %></p>
                     <p>Role:<%= author.role %></p>
-                    <p>ID:<%= author.author_id %></p>
-                     <a href="/blog/author/<%= author.author_id %>/update">Edit author</a> | <a href="/blog/author/<%= author.author_id %>/delete">Delete author</a>
+                    <p>ID:<%= author.id %></p>
+                     <a href="/blog/author/<%= author.id %>/update">Edit author</a> | <a href="/blog/author/<%= author.id %>/delete">Delete author</a>
                 </li>
             <br/>
         <% }); %>

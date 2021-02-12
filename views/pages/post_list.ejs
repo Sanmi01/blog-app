@@ -10,7 +10,12 @@
                 <li>
                     <h4><a href="/blog/post/<%= post.id %>"><%= post.post_title %></a></h4>
                     <p>Post: <%= post.post_body %></p>
-                    <p>Author ID:<%= post.author_id %></p>
+                    Author:
+                    <% authors.forEach(function(author) { %>
+                      <%= author.first_name %>
+                    <br/>
+                    <% }); %>
+                    <br>
                      <a href="/blog/post/<%= post.id %>/update">Edit post</a> | <a href="/blog/post/<%= post.id %>/delete">Delete post</a>
                 </li>
             <br/>

@@ -1,19 +1,21 @@
 var Post = require('../models/post');
 var models = require('../models');
+var async = require('async');
 
 // Display post create form on GET.
-exports.post_create_get = function(req, res, next) {
+exports.post_create_get = async function(req, res, next) {
         // renders a post form
-        res.render('forms/post_form', { title: 'Create Post', layout: 'layouts/main'});
+        const authors = await models.Author.findAll();
+        res.render('forms/post_form', { title: 'Create Post', authors: authors, layout: 'layouts/main'});
         console.log("Post form renders successfully");
 };
 
 // Handle post create on POST.
-exports.post_create_post = function(req, res, next) {
-
+exports.post_create_post = async function(req, res, next) {
+    let author_id = req.body.author_id;
      // create a new post based on the fields in our post model
      // I have create two fields, but it can be more for your model
-      models.Post.create({
+      const post = await models.Post.create({
             post_title: req.body.post_title,
             post_body: req.body.post_body,
             author_id: req.body.author_id
@@ -94,26 +96,28 @@ exports.post_update_post = function(req, res, next) {
 };
 
 // Display detail page for a specific post.
-exports.post_detail = function(req, res, next) {
+exports.post_detail = async function(req, res, next) {
+  const authors = await models.Author.findAll();
         // find a post by the primary key Pk
         models.Post.findById(
                 req.params.post_id
         ).then(function(post) {
         // renders an inividual post details page
-        res.render('pages/post_detail', { title: 'Post Details', post: post, layout: 'layouts/main'} );
+        res.render('pages/post_detail', { title: 'Post Details', post: post, authors:authors, layout: 'layouts/main'} );
         console.log("Post details renders successfully");
         });
 };
 
 
 // Display list of all posts.
-exports.post_list = function(req, res, next) {
+exports.post_list = async function(req, res, next) {
+  const authors = await models.Author.findAll();
         // controller logic to display all posts
         models.Post.findAll(
         ).then(function(posts) {
         // renders a post list page
         console.log("rendering post list");
-        res.render('pages/post_list', { title: 'Post List', posts: posts, layout: 'layouts/list'} );
+        res.render('pages/post_list', { title: 'Post List', posts: posts, authors: authors, layout: 'layouts/list'} );
         console.log("Posts list renders successfully");
         });
         
