@@ -6,25 +6,60 @@ var async = require('async');
 exports.post_create_get = async function(req, res, next) {
         // renders a post form
         const authors = await models.Author.findAll();
-        res.render('forms/post_form', { title: 'Create Post', authors: authors, layout: 'layouts/main'});
+        const categories = await models.Category.findAll();
+        res.render('forms/post_form', { title: 'Create Post', authors: authors, categories:categories, layout: 'layouts/main'});
         console.log("Post form renders successfully");
 };
 
 // Handle post create on POST.
-exports.post_create_post = async function(req, res, next) {
-    let author_id = req.body.author_id;
-     // create a new post based on the fields in our post model
-     // I have create two fields, but it can be more for your model
-      const post = await models.Post.create({
-            post_title: req.body.post_title,
-            post_body: req.body.post_body,
-            AuthorId: author_id
-        }).then(function() {
-            console.log("Post created successfully");
-           // check if there was an error during post creation
-            res.redirect('/blog/posts');
-      });
+exports.post_create_post = async function (req, res, next) {
+
+  const post = await models.Post.create({
+    post_title: req.body.post_title,
+    post_body: req.body.post_body,
+    AuthorId: req.body.author_id
+  });
+
+  console.log("The post id " + post.id);
+
+  let cateoryList = req.body.categories;
+
+  // check the size of the category list
+  console.log(cateoryList.length);
+
+
+  // I am checking if only 1 category has been selected
+  // if only one category then use the simple case scenario
+  if (cateoryList.length == 1) {
+    // check if we have that category in our database
+    const category = await models.Category.findById(req.body.categories);
+    if (!category) {
+      return res.status(400);
+    }
+    //otherwise add new entry inside PostCategory table
+    await post.addCategory(category);
+  }
+  // Ok now lets do for more than 1 category, the hard bit.
+  // if more than one category has been selected
+  else {
+    // Loop through all the ids in req.body.categories i.e. the selected categories
+    await req.body.categories.forEach(async (id) => {
+      // check if all category selected are in the database
+      const category = await models.Category.findById(id);
+      if (!category) {
+        return res.status(400);
+      }
+      // add to PostCategory after
+      await post.addCategory(category);
+    });
+  }
+
+  // everything done, now redirect....to post listing.
+  res.redirect('/blog/posts');
+
 };
+
+
 
 // Display post delete form on GET.
 exports.post_delete_get = function(req, res, next) {
@@ -98,12 +133,13 @@ exports.post_update_post = function(req, res, next) {
 // Display detail page for a specific post.
 exports.post_detail = async function(req, res, next) {
   const authors = await models.Author.findAll();
+  const categories = await models.Category.findAll();
         // find a post by the primary key Pk
         models.Post.findById(
                 req.params.post_id
         ).then(function(post) {
         // renders an inividual post details page
-        res.render('pages/post_detail', { title: 'Post Details', post: post, authors:authors, layout: 'layouts/main'} );
+        res.render('pages/post_detail', { title: 'Post Details', post: post, authors:authors, categories: categories,layout: 'layouts/main'} );
         console.log("Post details renders successfully");
         });
 };
@@ -112,12 +148,13 @@ exports.post_detail = async function(req, res, next) {
 // Display list of all posts.
 exports.post_list = async function(req, res, next) {
   const authors = await models.Author.findAll();
+  const categories = await models.Category.findAll();
         // controller logic to display all posts
         models.Post.findAll(
         ).then(function(posts) {
         // renders a post list page
         console.log("rendering post list");
-        res.render('pages/post_list', { title: 'Post List', posts: posts, authors: authors, layout: 'layouts/list'} );
+        res.render('pages/post_list', { title: 'Post List', posts: posts, authors: authors, categories: categories,layout: 'layouts/list'} );
         console.log("Posts list renders successfully");
         });
         

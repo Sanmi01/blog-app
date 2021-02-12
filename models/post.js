@@ -17,6 +17,13 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false
       }
     });
+
+    models.Post.belongsToMany(models.Category,{ 
+      as: 'categories', 
+      through: 'PostCategories',
+      foreignKey: 'post_id'
+    });
+
    };
 
 

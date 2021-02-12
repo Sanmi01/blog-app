@@ -122,13 +122,14 @@ exports.category_list = function(req, res, next) {
 };
 
 // Display detail page for a specific category.
-exports.category_detail = function(req, res, next) {
+exports.category_detail = async function(req, res, next) {
+        const posts = await models.Post.findAll();
         // constroller logic to display a single category
         models.Category.findById(
                 req.params.category_id
         ).then(function(category) {
         // renders an inividual user details page
-        res.render('pages/category_detail', { title: 'Category Details', category: category, layout: 'layouts/main'} );
+        res.render('pages/category_detail', { title: 'Category Details', category: category, posts:posts, layout: 'layouts/main'} );
         console.log("Category details renders successfully");
         });
         // renders an inividual category details page

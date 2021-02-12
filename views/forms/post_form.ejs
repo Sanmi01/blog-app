@@ -19,8 +19,18 @@
                     <br/>
                     <% }); %>
                 </select>
-              <input type="submit" value="Submit">
-            </form>
+                Category:<br>
+                <div>
+                     <% categories.forEach(function(category) { %>
+              <input type="checkbox" class='categoryCheckbox' name="categories" id="<%= category.id %>" value="<%= category.id %>">
+                    <label for="<%= category.name %>"><%= category.name %></label>                 
+                <br/>
+               <% }); %>
+                 </div>
+              <br><br>
+              <input type="submit" value="Create Post" onClick="checkCat()">
+             </form>
+
         </div>
     </div>
 <% } else if (title == 'Delete Post') { %>

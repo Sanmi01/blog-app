@@ -4,5 +4,11 @@
     <p>I am a category for this ID = <%= category.id %></p>
     <p>Name: <%= category.name %></p>
     <p>Specification:<%= category.specification %></p>
+    Posts:
+                    <% posts.forEach(function(post) { %>
+                      <%= post.post_title %>
+                    <br/>
+                    <% }); %>
+                    <br>
     <a href="/blog/category/<%= category.id %>/update">Edit category</a> | <a href="/blog/category/<%= category.id %>/delete">Delete category</a>
 </div>
