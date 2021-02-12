@@ -1,22 +1,24 @@
 var Comment = require('../models/comment');
 var models = require('../models');
+var async = require('async');
 
 // Display comment create form on GET.
-exports.comment_create_get = function(req, res, next) {
+exports.comment_create_get = async function(req, res, next) {
         // create comment GET controller logic here 
-        
+        const posts = await models.Post.findAll();
         // renders a comment form
-        res.render('forms/comment_form', { title: 'Create Comment', layout: 'layouts/main'});
+        res.render('forms/comment_form', { title: 'Create Comment', posts:posts, layout: 'layouts/main'});
 };
 
 // Handle comment create on POST.
-exports.comment_create_post = function(req, res, next) {
+exports.comment_create_post = async function(req, res, next) {
      // create comment POST controller logic here
-     models.Comment.create({
+     let post_id = req.body.post_id;
+     const comment = await models.Comment.create({
             title: req.body.title,
             username: req.body.username,
             body: req.body.body,
-            post_id: req.body.post_id
+            PostId: post_id
         }).then(function() {
             console.log("Comment created successfully");
            // check if there was an error during post creation
@@ -112,13 +114,15 @@ exports.comment_update_post = function(req, res, next) {
 };
 
 // Display list of all comments.
-exports.comment_list = function(req, res, next) {
+exports.comment_list = async function(req, res, next) {
+  const posts = await models.Post.findAll();
+
         // controller logic to display all comments
         models.Comment.findAll(
         ).then(function(comments) {
         // renders a post list page
         console.log("rendering comment list");
-        res.render('pages/comment_list', { title: 'Comment List', comments: comments, layout: 'layouts/list'} );
+        res.render('pages/comment_list', { title: 'Comment List', comments: comments, posts:posts, layout: 'layouts/list'} );
         console.log("Comment list renders successfully");
         });
         // renders a comment list page
@@ -126,7 +130,7 @@ exports.comment_list = function(req, res, next) {
 };
 
 // Display detail page for a specific comment.
-exports.comment_detail = function(req, res, next) {
+exports.comment_detail = async function(req, res, next) {
         // constroller logic to display a single comment
         models.Comment.findById(
                 req.params.comment_id

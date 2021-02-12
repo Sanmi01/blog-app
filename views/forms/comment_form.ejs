@@ -12,8 +12,13 @@
                  body:<br>
                  <input type="textarea" name="body" placeholder="Comment here">
                  <br>
-                 Post ID:<br>
-                 <input type="text" name="post_id" placeholder= "1" >
+                 Post:<br>
+                <select name = "post_id" class="form-control">
+                    <% posts.forEach(function(post) { %>
+                    <option  value="<%= post.id %>"><%= post.post_title %></option>
+                    <br/>
+                    <% }); %>
+                </select>
                  <br><br>
                  <input type="submit" value="Submit">
                </form>

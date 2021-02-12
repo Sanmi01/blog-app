@@ -18,7 +18,7 @@ exports.post_create_post = async function(req, res, next) {
       const post = await models.Post.create({
             post_title: req.body.post_title,
             post_body: req.body.post_body,
-            AuthorId: req.body.author_id
+            AuthorId: author_id
         }).then(function() {
             console.log("Post created successfully");
            // check if there was an error during post creation
