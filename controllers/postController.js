@@ -221,7 +221,14 @@ exports.post_list = async function(req, res, next) {
   const authors = await models.Author.findAll();
   const categories = await models.Category.findAll();
         // controller logic to display all posts
-        models.Post.findAll(
+        models.Post.findAll({
+
+          include: [
+            {
+              model: models.Author,
+              attributes: ['id', 'first_name', 'last_name']
+            }]
+      }
         ).then(function(posts) {
         // renders a post list page
         console.log("rendering post list");
