@@ -1,8 +1,20 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   var Post = sequelize.define('Post', {
-    post_title: DataTypes.STRING,
-    post_body: DataTypes.STRING,
+    post_title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        isAlpha: true,
+      }
+    },
+    post_body: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        isAlpha: true,
+      }
+    },
     AuthorId: DataTypes.INTEGER
   });
 
