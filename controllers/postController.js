@@ -77,7 +77,11 @@ exports.post_delete_get = function(req, res, next) {
 };
 
 // Handle post delete on POST.
-exports.post_delete_post = function(req, res, next) {
+exports.post_delete_post = async function(req, res, next) {
+  const post = await models.Post.findById(req.params.post_id);
+  const categories = await post.getCategories();
+  post.removeCategories(categories);
+
           models.Post.destroy({
             // find the post_id to delete from database
             where: {
@@ -93,22 +97,59 @@ exports.post_delete_post = function(req, res, next) {
  };
 
 // Display post update form on GET.
-exports.post_update_get = function(req, res, next) {
+exports.post_update_get = async function(req, res, next) {
         // Find the post you want to update
+        const authors = await models.Author.findAll();
+        const categories = await models.Category.findAll();
         console.log("ID is " + req.params.post_id);
         models.Post.findById(
                 req.params.post_id
         ).then(function(post) {
                // renders a post form
-               res.render('forms/post_form', { title: 'Update Post', post: post, layout: 'layouts/main'});
+               res.render('forms/post_form', { title: 'Update Post', authors:authors, categories:categories, post: post, layout: 'layouts/main'});
                console.log("Post update get successful");
           });
         
 };
 
 // Handle post update on POST.
-exports.post_update_post = function(req, res, next) {
+exports.post_update_post = async function(req, res, next) {
         console.log("ID is " + req.params.post_id);
+        const post = await models.Post.findById(req.params.post_id);
+        const categories = await post.getCategories();
+        const authors = await models.Author.findAll();
+        post.removeCategories(categories);
+
+
+        let cateoryList = req.body.categories;
+    
+        // check the size of the category list
+        console.log(cateoryList.length);
+
+        if (cateoryList.length == 1) {
+          // check if we have that category in our database
+          const category = await models.Category.findById(req.body.categories);
+          if (!category) {
+           return res.status(400);
+          }
+          //otherwise add new entry inside PostCategory table
+          await post.addCategory(category);
+     }
+     // Ok now lets do for more than 1 category, the hard bit.
+     // if more than one category has been selected
+     else {
+     // Loop through all the ids in req.body.categories i.e. the selected categories
+     await req.body.categories.forEach(async (id) => {
+         // check if all category selected are in the database
+         const category = await models.Category.findById(id);
+         if (!category) {
+           return res.status(400);
+         }
+         // add to PostCategory after
+         await post.addCategory(category);
+         });
+     }
+
         models.Post.update(
         // Values to update
             {

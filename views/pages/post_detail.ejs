@@ -10,7 +10,7 @@
 <% post.categories.forEach(function(category) { %> 
  <a href="/blog/category/<%= category.id %>/"> <%= category.name %> </a>  
 <% }); %>
-
+<br>
     <a href="/blog/user/<%= post.id %>/update">Edit post</a> | <a href="/blog/user/<%= post.id %>/delete">Delete post</a>
 </div>
  

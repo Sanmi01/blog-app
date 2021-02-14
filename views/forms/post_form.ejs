@@ -39,15 +39,31 @@
     <div class="col-sm-12">    
         <div class="jumbotron">
             <h2>Update Post</h2>
-            <form action="/blog/post/<%= post.id %>/update" method="post">
+            <form action="" method="post">
               Post Title:<br>
-              <input type="text" name="post_title" value="<%= post.post_title %>">
+              <input type="text" name="post_title" value="Post Title">
               <br>
               Post Body:<br>
-              <input type="text" name="post_body" value="<%= post.post_body %>">
+              <input type="text" name="post_body" value="Post Body">
               <br><br>
-              <input type="submit" value="Update">
-            </form>
+              Author:<br>
+                <select name = "author_id" class="form-control">
+                    <% authors.forEach(function(author) { %>
+                    <option  value="<%= author.id %>"><%= author.first_name %></option>
+                    <br/>
+                    <% }); %>
+                </select>
+                Category:<br>
+                <div>
+                     <% categories.forEach(function(category) { %>
+              <input type="checkbox" class='categoryCheckbox' name="categories" id="<%= category.id %>" value="<%= category.id %>">
+                    <label for="<%= category.name %>"><%= category.name %></label>                 
+                <br/>
+               <% }); %>
+                 </div>
+              <br><br>
+              <input type="submit" value="Update Post" onClick="checkCat()">
+             </form>
         </div>
     </div>
 <% } else { %>
