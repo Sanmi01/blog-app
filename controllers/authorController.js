@@ -121,10 +121,18 @@ exports.author_list = function(req, res, next) {
 };
 
 // Display detail page for a specific author.
-exports.author_detail = function(req, res, next) {
+exports.author_detail = async function(req, res, next) {
+
+        const categories = await models.Category.findAll();
         // GET controller logic to display just one author
         models.Author.findById(
-                req.params.author_id
+                req.params.author_id, {
+                        include: [
+                                {
+                                  model: models.Post
+                                }
+                                     ]            
+                }
         ).then(function(author) {
         // renders an inividual post details page
         res.render('pages/author_detail', { title: 'Author Details', author: author, layout: 'layouts/main'} );

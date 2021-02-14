@@ -7,4 +7,25 @@
     <p>First Name:<%= author.first_name %></p>
     <p>Last Name:<%= author.last_name %></p>
     <a href="/blog/author/<%= author.id %>/update">Edit author</a> | <a href="/blog/author/<%= author.id %>/delete">Delete author</a>
+    <% if(author.Posts.length == 0) { %>
+        <h2>There are no posts by this author yet </h2>
+    <% } else { %>
+        <h2>All Posts by this Author</h2>
+        <div class="">
+            <ol>
+            <% author.Posts.forEach(function(post) { %>
+                    <li>
+                        <p> 
+                            <a href="/blog/post/<%= post.id %>"><%= post.post_title %></a>
+                             <br/>
+                            <%= post.post_body %>
+                            <br/> <a href="/blog/post/<%= post.id %>/update">Edit  Post</a> | <a href="/blog/post/<%= post.id %>/delete">Delete Post</a>
+                        </p>
+                    </li>
+                <br/>
+            <% }); %>
+            </ol>
+        </div>    
+     <% } %>
+
 </div>

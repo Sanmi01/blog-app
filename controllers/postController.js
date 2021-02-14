@@ -136,7 +136,37 @@ exports.post_detail = async function(req, res, next) {
   const categories = await models.Category.findAll();
         // find a post by the primary key Pk
         models.Post.findById(
-                req.params.post_id
+                req.params.post_id,
+                {
+                  // make sure include the comment so we can display it
+                    include: [
+                    /*
+                      {
+                      model: models.Comment
+                    },
+                    */
+                    {
+                      model: models.Author,
+                      attributes: ['id', 'first_name', 'last_name']
+                    },
+                    {
+                      model: models.Category,
+                      as: 'categories',
+                      required: false,
+                      // Pass in the Category attributes that you want to retrieve
+                      attributes: ['id', 'name'],
+                      through: {
+                        // This block of code allows you to retrieve the properties of the join table PostCategories
+                        model: models.PostCategories,
+                        as: 'postCategories',
+                        attributes: ['post_id', 'category_id'],
+                      }
+                    }
+                    
+                    ]
+                    
+                }
+
         ).then(function(post) {
         // renders an inividual post details page
         res.render('pages/post_detail', { title: 'Post Details', post: post, authors:authors, categories: categories,layout: 'layouts/main'} );

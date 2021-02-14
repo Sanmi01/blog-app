@@ -6,6 +6,11 @@
     <p>I am a post for this ID = <%= post.id %></p>
     <p>Title: <%= post.post_title %></p>
     <p>Post:<%= post.post_body %></p>
+    <b>Inside Categories:</b> 
+<% post.categories.forEach(function(category) { %> 
+ <a href="/blog/category/<%= category.id %>/"> <%= category.name %> </a>  
+<% }); %>
+
     <a href="/blog/user/<%= post.id %>/update">Edit post</a> | <a href="/blog/user/<%= post.id %>/delete">Delete post</a>
 </div>
  

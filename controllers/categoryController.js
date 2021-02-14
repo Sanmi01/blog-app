@@ -126,7 +126,24 @@ exports.category_detail = async function(req, res, next) {
         const posts = await models.Post.findAll();
         // constroller logic to display a single category
         models.Category.findById(
-                req.params.category_id
+                req.params.category_id, {
+                        include: [
+                                {
+                                     model: models.Post,
+                                     as: 'posts',
+                                     required: false,
+                                     // Pass in the Category attributes that you want to retrieve
+                                     attributes: ['id', 'post_title', 'post_body'],
+                                     through: {
+                                       // This block of code allows you to retrieve the properties of the join table PostCategories
+                                       model: models.PostCategories,
+                                       as: 'postCategories',
+                                       attributes: ['post_id', 'category_id'],
+                                   }
+                               }
+                           ]
+           
+                }
         ).then(function(category) {
         // renders an inividual user details page
         res.render('pages/category_detail', { title: 'Category Details', category: category, posts:posts, layout: 'layouts/main'} );
